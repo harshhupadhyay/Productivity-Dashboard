@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Desk — Personal Productivity</title>
+    <meta
+      name="description"
+      content="Manage tasks, track goals, plan your week, focus with Pomodoro, and check weather — all in one clean workspace."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="weather.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <aside class="sidebar">
+      <nav class="menu">
+        <ul>
+          <li
+            class="active"
+            data-page="dashboard"
+            id="nav-dashboard"
+            title="Dashboard"
+          >
+            <i class="fa-solid fa-house"></i> Dashboard
+          </li>
+          <li data-page="todo" id="nav-todo" title="Tasks">
+            <i class="fa-solid fa-list-check"></i> Tasks
+          </li>
+          <li data-page="planner" id="nav-planner" title="Planner">
+            <i class="fa-solid fa-calendar-days"></i> Planner
+          </li>
+          <li data-page="goals" id="nav-goals" title="Goals">
+            <i class="fa-solid fa-bullseye"></i> Goals
+          </li>
+          <li data-page="pomodoro" id="nav-pomodoro" title="Focus">
+            <i class="fa-solid fa-clock"></i> Focus
+          </li>
+          <li data-page="weather" id="nav-weather" title="Weather">
+            <i class="fa-solid fa-cloud-sun"></i> Weather
+          </li>
+          <li data-page="quotes" id="nav-quotes" title="Quotes">
+            <i class="fa-solid fa-quote-left"></i> Quotes
+          </li>
+        </ul>
+      </nav>
+
+      <button id="them-btn" title="Toggle theme">
+        <span class="theme-btn-left">
+          <i id="icon" class="fa-solid fa-moon"></i>
+          <span id="theme-label">Dark mode</span>
+        </span>
+        <i id="on-off" class="fa-solid fa-toggle-on"></i>
+      </button>
+    </aside>
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <main>
+      <header class="app-topbar">
+        <div class="header-left-group">
+          <button
+            id="menu-toggle-btn"
+            class="menu-toggle-btn"
+            aria-label="Toggle sidebar"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="greeting">
+            <h2 id="greeting">Good evening</h2>
+            <p id="date">Sunday, July 12</p>
+          </div>
+        </div>
+
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input
+            type="text"
+            id="global-search"
+            placeholder="Search tasks, goals, planner…"
+          />
+          <span class="search-kbd">⌘K</span>
+        </div>
+
+        <div class="header-right">
+          <div class="time">05:08:40 PM</div>
+          <div class="profile" title="Profile">
+            <span>HU</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard -->
+      <section id="dashboard" class="page-section app-shell dashboard">
+        <div class="hero-card glass">
+          <div class="hero-left">
+            <h1 id="hero-greeting">Good evening</h1>
+            <p>Here's what's on your plate today.</p>
+            <span class="hero-date" id="hero-date">Sunday, July 12</span>
+          </div>
+          <div class="hero-right">
+            <div class="hero-stat-block">
+              <div class="stat-label">Local time</div>
+              <div class="stat-value" id="time">08:45 PM</div>
+            </div>
+            <div class="hero-weather">
+              <i
+                id="dashboard-weather-icon"
+                class="fa-solid fa-cloud-sun hero-weather-icon"
+              ></i>
+              <div class="hero-weather-info">
+                <h2 id="temperature">--°C</h2>
+                <p id="condition">Loading…</p>
+                <div class="weather-details-compact">
+                  <span
+                    ><i class="fa-solid fa-droplet"></i>
+                    <span id="humidity">--%</span></span
+                  >
+                  <span
+                    ><i class="fa-solid fa-wind"></i>
+                    <span id="wind">-- km/h</span></span
+                  >
+                </div>
+                <small id="city">New Delhi, India</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="dashboard-widget todo-widget card">
+            <div class="widget-header">
+              <h3>Tasks</h3>
+              <span id="todo-badge" class="badge">0</span>
+            </div>
+            <div class="widget-progress">
+              <div class="progress-bar-container">
+                <div
+                  class="progress-bar"
+                  id="todo-progress"
+                  style="width: 0%"
+                ></div>
+              </div>
+              <span id="todo-widget-stats">0/0 completed</span>
+            </div>
+            <ul class="widget-todo-list" id="widget-todo-list">
+              <p class="empty-msg">No active tasks. Add one below.</p>
+            </ul>
+            <form class="widget-quick-add" id="widget-todo-quick-add">
+              <input type="text" placeholder="Quick add…" required />
+              <button type="submit" aria-label="Add task">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </form>
+          </div>
+
+          <div class="dashboard-widget pomodoro-widget card">
+            <h3>Focus timer</h3>
+            <div class="mini-timer-display-container">
+              <span id="mini-timer-display">25:00</span>
+              <span id="mini-timer-mode">Focus session</span>
+            </div>
+            <div class="widget-controls">
+              <button id="mini-timer-start-btn" class="mini-btn btn-primary">
+                <i class="fa-solid fa-play"></i> Start
+              </button>
+              <button id="mini-timer-reset-btn" class="mini-btn btn-secondary">
+                <i class="fa-solid fa-rotate-left"></i> Reset
+              </button>
+            </div>
+            <div class="mini-pomodoro-link">
+              <a href="#" data-link="pomodoro"
+                >Open full timer <i class="fa-solid fa-arrow-right-long"></i
+              ></a>
+            </div>
+          </div>
+
+          <div class="dashboard-widget goals-widget card">
+            <h3>Goals</h3>
+            <div id="widget-goal-content">
+              <p class="empty-msg">No active goals yet.</p>
+            </div>
+            <div class="mini-goals-link">
+              <a href="#" data-link="goals"
+                >Manage goals <i class="fa-solid fa-arrow-right-long"></i
+              ></a>
+            </div>
+          </div>
+
+          <div class="dashboard-widget notes-widget card">
+            <h3>Quick note</h3>
+            <textarea
+              id="sticky-note"
+              placeholder="Jot something down — saved automatically."
+            ></textarea>
+          </div>
+
+          <div class="dashboard-widget weather-details-widget card">
+            <h3>Weather</h3>
+            <div class="detailed-weather-info">
+              <div class="weather-row">
+                <span>Feels like</span>
+                <strong id="weather-apparent">--°C</strong>
+              </div>
+              <div class="weather-row">
+                <span>Humidity</span>
+                <strong id="weather-humidity-val">--%</strong>
+              </div>
+              <div class="weather-row">
+                <span>Wind</span>
+                <strong id="weather-wind-speed">-- km/h</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-widget quote-widget card">
+            <h3>Quote of the day</h3>
+            <blockquote id="widget-quote">
+              <p>"The secret of getting ahead is getting started."</p>
+              <cite>— Mark Twain</cite>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tasks -->
+      <section id="todo" class="page-section app-shell todo-page hidden">
+        <div class="section-header">
+          <h2>Tasks</h2>
+          <p>Capture, filter, and clear what you need to get done.</p>
+        </div>
+        <div class="todo-card glass">
+          <div class="card-header">
+            <h2>All tasks</h2>
+            <span id="task-count">0 tasks</span>
+          </div>
+          <form class="todo-form">
+            <input
+              type="text"
+              id="todo-input"
+              placeholder="What needs doing?"
+              autocomplete="off"
+              required
+            />
+            <button type="submit" id="add-btn" aria-label="Add task">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </form>
+          <div class="todo-filter">
+            <button class="active" data-filter="all">All</button>
+            <button data-filter="active">Active</button>
+            <button data-filter="completed">Done</button>
+          </div>
+          <ul class="todo-list"></ul>
+          <div class="todo-footer">
+            <span id="remaining-task">0 remaining</span>
+            <button id="clear-completed">Clear completed</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Planner -->
+      <section id="planner" class="page-section app-shell planner-page hidden">
+        <div class="planner-container">
+          <div class="section-header">
+            <h2>Weekly planner</h2>
+            <p>Spread tasks across the week so nothing piles up on one day.</p>
+          </div>
+          <div class="planner-grid">
+            <div class="planner-day-card card" data-day="Monday">
+              <div class="day-card-header">
+                <h3>Monday</h3>
+                <span class="day-count badge">0</span>
+              </div>
+              <ul class="planner-task-list"></ul>
+              <form class="planner-add-form">
+                <input type="text" placeholder="Add item…" required />
+                <button type="submit" aria-label="Add">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </form>
+            </div>
+            <div class="planner-day-card card" data-day="Tuesday">
+              <div class="day-card-header">
+                <h3>Tuesday</h3>
+                <span class="day-count badge">0</span>
+              </div>
+              <ul class="planner-task-list"></ul>
+              <form class="planner-add-form">
+                <input type="text" placeholder="Add item…" required />
+                <button type="submit" aria-label="Add">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </form>
+            </div>
+            <div class="planner-day-card card" data-day="Wednesday">
+              <div class="day-card-header">
+                <h3>Wednesday</h3>
+                <span class="day-count badge">0</span>
+              </div>
+              <ul class="planner-task-list"></ul>
+              <form class="planner-add-form">
+                <input type="text" placeholder="Add item…" required />
+                <button type="submit" aria-label="Add">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </form>
+            </div>
+            <div class="planner-day-card card" data-day="Thursday">
+              <div class="day-card-header">
+                <h3>Thursday</h3>
+                <span class="day-count badge">0</span>
+              </div>
+              <ul class="planner-task-list"></ul>
+              <form class="planner-add-form">
+                <input type="text" placeholder="Add item…" required />
+                <button type="submit" aria-label="Add">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </form>
+            </div>
+            <div class="planner-day-card card" data-day="Friday">
+              <div class="day-card-header">
+                <h3>Friday</h3>
+                <span class="day-count badge">0</span>
+              </div>
+              <ul class="planner-task-list"></ul>
+              <form class="planner-add-form">
+                <input type="text" placeholder="Add item…" required />
+                <button type="submit" aria-label="Add">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </form>
+            </div>
+            <div class="planner-day-card card" data-day="Saturday">
+              <div class="day-card-header">
+                <h3>Saturday</h3>
+                <span class="day-count badge">0</span>
+              </div>
+              <ul class="planner-task-list"></ul>
+              <form class="planner-add-form">
+                <input type="text" placeholder="Add item…" required />
+                <button type="submit" aria-label="Add">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </form>
+            </div>
+            <div class="planner-day-card card" data-day="Sunday">
+              <div class="day-card-header">
+                <h3>Sunday</h3>
+                <span class="day-count badge">0</span>
+              </div>
+              <ul class="planner-task-list"></ul>
+              <form class="planner-add-form">
+                <input type="text" placeholder="Add item…" required />
+                <button type="submit" aria-label="Add">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Goals -->
+      <section id="goals" class="page-section app-shell goals-page hidden">
+        <div class="goals-container">
+          <div class="section-header">
+            <h2>Goals</h2>
+            <p>Set targets, log progress, and watch them add up.</p>
+          </div>
+          <form class="goals-form card" id="new-goal-form">
+            <div class="form-group">
+              <label for="goal-title">Name</label>
+              <input
+                type="text"
+                id="goal-title"
+                placeholder="Read 10 books, run 50 km…"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="goal-category">Category</label>
+              <select id="goal-category">
+                <option value="Personal">Personal</option>
+                <option value="Health">Health & fitness</option>
+                <option value="Career">Work & career</option>
+                <option value="Finance">Finance</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="goal-target">Target</label>
+              <input
+                type="number"
+                id="goal-target"
+                placeholder="10"
+                min="1"
+                required
+              />
+            </div>
+            <button type="submit" class="primary-btn">Create goal</button>
+          </form>
+          <div class="goals-grid" id="goals-grid"></div>
+        </div>
+      </section>
+
+      <!-- Pomodoro -->
+      <section
+        id="pomodoro"
+        class="page-section app-shell pomodoro-page hidden"
+      >
+        <div class="pomodoro-container">
+          <div class="section-header">
+            <h2>Focus timer</h2>
+            <p>25 minutes on, 5 minutes off. Repeat until done.</p>
+          </div>
+          <div class="pomodoro-timer-card card glass">
+            <div class="pomodoro-modes">
+              <button class="active" id="mode-focus" data-mode="focus">
+                Focus
+              </button>
+              <button id="mode-short" data-mode="short">Short break</button>
+              <button id="mode-long" data-mode="long">Long break</button>
+            </div>
+
+            <div class="timer-circle-wrapper">
+              <svg class="timer-svg" viewBox="0 0 220 220">
+                <circle
+                  class="timer-bg-circle"
+                  cx="110"
+                  cy="110"
+                  r="100"
+                ></circle>
+                <circle
+                  class="timer-progress-circle"
+                  cx="110"
+                  cy="110"
+                  r="100"
+                  id="timer-progress"
+                  stroke-dasharray="628.318"
+                  stroke-dashoffset="0"
+                ></circle>
+              </svg>
+              <div class="timer-display-content">
+                <span id="timer-countdown">25:00</span>
+                <span id="timer-label">Focus session</span>
+              </div>
+            </div>
+
+            <div class="timer-controls">
+              <button id="timer-start-btn" class="primary-btn">
+                <i class="fa-solid fa-play"></i> Start
+              </button>
+              <button id="timer-pause-btn" class="secondary-btn hidden">
+                <i class="fa-solid fa-pause"></i> Pause
+              </button>
+              <button id="timer-reset-btn" class="tertiary-btn">
+                <i class="fa-solid fa-rotate-left"></i> Reset
+              </button>
+            </div>
+
+            <div class="pomodoro-settings">
+              <h4>Duration</h4>
+              <div class="preset-buttons">
+                <button class="preset-btn" data-time="5">5 min</button>
+                <button class="preset-btn" data-time="15">15 min</button>
+                <button class="preset-btn" data-time="30">30 min</button>
+                <button class="preset-btn active" data-time="25">25 min</button>
+              </div>
+              <div class="custom-time-input">
+                <label for="custom-time-val">Custom (min)</label>
+                <input
+                  type="number"
+                  id="custom-time-val"
+                  min="1"
+                  max="180"
+                  placeholder="25"
+                />
+                <button id="apply-custom-time">Apply </button>
+              </div>
+            </div>
+
+            <div class="pomodoro-stats">
+              <span
+                >Sessions completed:
+                <strong id="completed-sessions-count">0</strong></span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Weather -->
+      <section id="weather" class="page-section weather-page hidden">
+        <div class="wx-shell">
+          <div class="wx-topbar">
+            <div class="wx-location-block">
+              <div class="wx-location-row">
+                <i class="fa-solid fa-location-dot"></i>
+                <h1 id="page-weather-city">New Delhi, India</h1>
+              </div>
+              <p class="wx-date" id="wx-page-date">—</p>
+            </div>
+            <div class="wx-topbar-actions">
+              <div class="wx-search-wrap">
+                <button
+                  type="button"
+                  class="wx-search-toggle"
+                  id="wx-search-toggle"
+                  aria-label="Search city"
+                >
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <form class="wx-search-form" id="weather-search-form">
+                  <input
+                    type="text"
+                    id="weather-search-input"
+                    placeholder="Search city…"
+                  />
+                  <button type="submit">Go</button>
+                </form>
+              </div>
+              <button
+                type="button"
+                class="wx-refresh-btn"
+                id="wx-refresh-btn"
+                aria-label="Refresh weather"
+              >
+                <i class="fa-solid fa-rotate"></i>
+              </button>
+            </div>
+          </div>
+          <p class="wx-updated" id="wx-last-updated">Updated just now</p>
+
+          <div class="wx-grid">
+            <div class="wx-main">
+              <div class="wx-hero wx-glass cloudy" id="wx-hero">
+                <div class="wx-hero-left">
+                  <div class="wx-hero-temp" id="page-weather-temp">--°</div>
+                  <div class="wx-hero-condition" id="page-weather-condition">
+                    Loading…
+                  </div>
+                  <p class="wx-hero-sub" id="wx-hero-sub">
+                    Fetching conditions…
+                  </p>
+                  <div class="wx-hero-badges">
+                    <span class="wx-hero-badge" id="wx-high">H —°</span>
+                    <span class="wx-hero-badge" id="wx-low">L —°</span>
+                  </div>
+                </div>
+                <p class="wx-hero-note">
+                  Live forecast powered by Open-Meteo. Search any city for
+                  up-to-date conditions.
+                </p>
+              </div>
+
+              <div class="wx-hourly wx-glass">
+                <p class="wx-panel-title">Hourly forecast</p>
+                <div class="wx-hourly-scroll" id="wx-hourly-grid"></div>
+              </div>
+
+              <div class="wx-weekly" id="forecast-cards-grid"></div>
+            </div>
+
+            <aside class="wx-aside">
+              <div class="wx-panel wx-glass">
+                <div class="wx-panel-header">
+                  <h3>Live conditions</h3>
+                  <span class="wx-danger-badge" id="wx-danger-badge"
+                    >Dangerous</span
+                  >
+                </div>
+                <div class="wx-chart-wrap" id="wx-temp-chart"></div>
+                <div class="wx-stats-row">
+                  <div class="wx-stat">
+                    <i class="fa-solid fa-droplet"></i>
+                    <span class="label">Humidity</span>
+                    <span class="value" id="page-weather-humidity">--%</span>
+                  </div>
+                  <div class="wx-stat">
+                    <i class="fa-solid fa-wind"></i>
+                    <span class="label">Wind</span>
+                    <span class="value" id="page-weather-wind">-- km/h</span>
+                  </div>
+                  <div class="wx-stat">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span class="label">Pressure</span>
+                    <span class="value" id="wx-pressure">-- hPa</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="wx-panel wx-glass">
+                <div class="wx-panel-header">
+                  <h3>Recently searched</h3>
+                  <a href="#" class="wx-see-all" id="wx-clear-recent">Clear</a>
+                </div>
+                <ul class="wx-recent-list" id="wx-recent-list">
+                  <li class="wx-empty-recent">No recent searches</li>
+                </ul>
+              </div>
+
+              <div class="wx-wind-map wx-glass">
+                <div class="wx-wind-map-bg"></div>
+                <p
+                  class="wx-panel-title"
+                  style="position: relative; z-index: 1; margin-bottom: 0.75rem"
+                >
+                  Wind map
+                </p>
+                <div class="wx-wind-map-content">
+                  <div class="wx-wind-info">
+                    <p class="speed" id="wx-wind-speed-label">-- km/h</p>
+                    <p class="dir" id="wx-wind-dir-label">—</p>
+                  </div>
+                  <div class="wx-wind-visual">
+                    <i
+                      class="fa-solid fa-location-arrow wx-wind-arrow"
+                      id="wx-wind-arrow"
+                    ></i>
+                    <span class="wx-wind-pin"></span>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+        <span
+          id="page-weather-apparent"
+          class="hidden"
+          aria-hidden="true"
+        ></span>
+      </section>
+
+      <!-- Quotes -->
+      <section id="quotes" class="page-section app-shell quotes-page hidden">
+        <div class="quotes-container">
+          <div class="section-header">
+            <h2>Quotes</h2>
+            <p>A line to reset your head when you need it.</p>
+          </div>
+          <div class="quotes-tabs">
+            <button class="active" id="tab-all-quotes">Browse</button>
+            <button id="tab-fav-quotes">Saved</button>
+          </div>
+
+          <div class="quote-card-display card glass" id="quote-display-card">
+            <i class="fa-solid fa-quote-left card-quote-icon"></i>
+            <p class="quote-text" id="page-quote-text">
+              "The only way to do great work is to love what you do."
+            </p>
+            <p class="quote-author" id="page-quote-author">— Steve Jobs</p>
+            <div class="quote-actions">
+              <button id="copy-quote-btn" title="Copy">
+                <i class="fa-solid fa-copy"></i> Copy
+              </button>
+              <button id="fav-quote-btn" title="Save">
+                <i class="fa-regular fa-heart"></i> Save
+              </button>
+              <button id="next-quote-btn" class="primary-btn">
+                <i class="fa-solid fa-shuffle"></i> Next
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="favorite-quotes-list card hidden"
+            id="favorite-quotes-list-section"
+          >
+            <h3>Saved quotes</h3>
+            <ul id="favorites-list">
+              <p class="empty-msg">
+                Nothing saved yet. Hit the heart on any quote.
+              </p>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./js/state.js"></script>
+    <script src="./js/shared.js"></script>
+    <script src="./js/layout.js"></script>
+    <script src="./js/task-manager.js"></script>
+    <script src="./js/pomodoro.js"></script>
+    <script src="./js/weather.js"></script>
+    <script src="./js/quotes-search.js"></script>
+  </body>
+</html>
