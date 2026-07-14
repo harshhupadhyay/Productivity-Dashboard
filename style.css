@@ -165,7 +165,9 @@ body {
   cursor: pointer;
   margin-top: auto;
   padding: 0;
-  transition: background var(--transition), border-color var(--transition);
+  transition:
+    background var(--transition),
+    border-color var(--transition);
 }
 
 #them-btn #theme-label,
@@ -200,7 +202,10 @@ body {
   justify-content: center;
   border-radius: var(--radius);
   cursor: pointer;
-  transition: background var(--transition), color var(--transition), border-color var(--transition);
+  transition:
+    background var(--transition),
+    color var(--transition),
+    border-color var(--transition);
   color: var(--text-muted);
   font-size: 0;
   border: 1px solid transparent;
@@ -701,14 +706,34 @@ textarea {
 
 .btn-primary,
 .primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border-hover);
   background: var(--accent-subtle);
   color: var(--accent);
-  border: 1px solid var(--glass-border-hover);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition),
+    transform var(--transition);
 }
 
 .btn-primary:hover,
 .primary-btn:hover {
   background: var(--glass-bg-strong);
+}
+
+.btn-primary:active,
+.primary-btn:active {
+  transform: translateY(1px);
 }
 
 .btn-secondary {
@@ -1085,6 +1110,25 @@ textarea {
   background: var(--glass-bg-input);
   outline: none;
   font-size: 0.875rem;
+}
+
+.goals-form select {
+  color-scheme: dark;
+}
+
+.goals-form select option {
+  background: var(--bg-app);
+  color: var(--text-primary);
+}
+
+#goal-target {
+  -moz-appearance: textfield;
+}
+
+#goal-target::-webkit-outer-spin-button,
+#goal-target::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .goals-grid {
